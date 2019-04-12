@@ -16,11 +16,13 @@ using Microsoft.Owin.Security.OAuth;
 using Ejemplo.Models;
 using Ejemplo.Providers;
 using Ejemplo.Results;
+using System.Web.Http.Cors;
 
 namespace Ejemplo.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
+    [EnableCors(origins: "http://localhost:56323", headers: "*", methods: "*")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
@@ -331,7 +333,7 @@ namespace Ejemplo.Controllers
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
+            
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
